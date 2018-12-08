@@ -7,10 +7,13 @@ from bs4 import BeautifulSoup
 from dominate.tags import *
 
 SNIPPET = 'snippets/'
-RAW_HTML_PATH = '/Users/dipanjan/gitHub/Python-Projects/FinalProject/test-data-collection/cacm/'
-BM25_RES = '/Users/dipanjan/gitHub/Python-Projects/FinalProject/BM25_Results/BM25.txt'
-QUERY_PATH = '/Users/dipanjan/gitHub/Python-Projects/FinalProject/test-data-collection/cacm.query.txt'
+RAW_HTML_PATH = '/Users/dipanjan/gitHub/GroupProject/FinalProject/test-collection/cacm/'
+BM25_RES = '/Users/dipanjan/gitHub/GroupProject/FinalProject/BM25_Results/BM25.txt'
+QUERY_PATH = '/Users/dipanjan/gitHub/GroupProject/FinalProject/test-collection/cacm.query.txt'
+COMMON_WORD= '/Users/dipanjan/gitHub/GroupProject/FinalProject/test-collection/common_words'
 WINDOW = 40
+
+stop_word_list=[]
 
 
 # get the top ranked documents from BM25 output and populate the dictionary
@@ -39,6 +42,7 @@ def processQuery ():
         docno.decompose ()
         text = doc.text.strip ()
         processed_query_dict[queryID] = text
+    #print("The processed query dict is " +str(processed_query_dict))
     return processed_query_dict
 
 
@@ -51,6 +55,7 @@ def startSnippetGeneration (ranked_document_list, processed_query_list):
 
 def createSnippet (query, docList, queryID):
     cleanedQuery = clean (query)
+    #print(cleanedQuery)
     newHtml = dominate.document (title=cleanedQuery)
     with newHtml.body:
         h1 (cleanedQuery)
@@ -101,10 +106,28 @@ def createSnippet (query, docList, queryID):
 
 
 def clean (query):
+    # stopped_query_list = []
     query = query.replace ('\t', ' ')
     query = re.sub (' +', ' ', query)
     query.replace ('\n', ' ')
+    # query_term_list=query.split(" ")
+    # for term in query_term_list:
+    #     if term not in stop_word_list:
+    #         stopped_query_list.append(term)
+    # #print("The stopped query list is " +str(stopped_query_list))
+    # query = ""
+    # for term in stopped_query_list:
+    #     query += term + " "
+    # #print ("The final query is : " + str (query))
     return query
+
+
+def generate_stop_list():
+    global stop_word_list
+    with open(COMMON_WORD,'r') as f:
+        stop_word_list =[line.strip() for line in f]
+    return stop_word_list
+
 
 
 def boldify (title, query):
@@ -132,6 +155,7 @@ def boldify (title, query):
 def main ():
     ranked_document_list = getRanking ()  # get the ranked list from BM25 output
     processed_query_list = processQuery ()
+    generate_stop_list()
     print ('\nStarted generating snippets')
     startSnippetGeneration (ranked_document_list, processed_query_list)
     print ('HTML output files with snippets are generated!')
