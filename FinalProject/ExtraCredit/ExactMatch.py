@@ -67,7 +67,7 @@ def print_doc_list ():
 
 def exact_match_retrival (query_terms, query_id):
     if len (query_terms) == 1:
-        #print ("The query terms are" + str (query_terms))
+        # print ("The query terms are" + str (query_terms))
         resultList = getPostingList (query_terms[0])
         if not resultList:
             print ("0 documents returned as there is no match")
@@ -158,7 +158,7 @@ def mergePostingList (list1, list2):
 # This is for exact-match query
 def exact_match (resultList, query_terms, query_id):
     # print ("The resultList : " + str (resultList))
-    #print ("The query terms are : " + str (query_terms))
+    # print ("The query terms are : " + str (query_terms))
     pos_doc_map = {}
     for document in resultList:
         pos_list = []
@@ -208,7 +208,7 @@ def exact_match (resultList, query_terms, query_id):
                         val.append (key)
                         final_rank_map[query_id] = val
 
-    #print ("The final map is : " + str (final_rank_map))
+    # print ("The final map is : " + str (final_rank_map))
 
 
 def getRelevantDocuments (final_rank_map):
@@ -262,14 +262,14 @@ def generate_index ():
                 inverted_index[term][doc_id] += 1
         counter += 1
     total_num_of_docs = counter - 1
-    #print (" The docmap is " + str (doc_name))
+    # print (" The docmap is " + str (doc_name))
     return inverted_index, total_num_of_docs, doc_name, doc_length
 
 
 def generate_doc_bm25_score (query, inverted_index, total_num_of_docs, relevant_list, doc_name, doc_length):
     query_term_freq = {}
     query_term_list = query.split ()
-    #print ("The query term list is " + str (query_term_list))
+    # print ("The query term list is " + str (query_term_list))
     reduced_inverted_index = {}  # this inverted_index contains only those terms which are present in query
     for term in query_term_list:
         if term not in query_term_freq.keys ():
@@ -324,7 +324,7 @@ def process_score (query_term, inverted_index, N, relevant_list, doc_name, doc_l
             else:
                 doc_score.update ({doc_id: score})
     sorted_doc_score = sorted (doc_score.items (), key=operator.itemgetter (1), reverse=True)
-    #print (" The sorted doc_score is " + str (sorted_doc_score))
+    # print (" The sorted doc_score is " + str (sorted_doc_score))
     write_doc_score (sorted_doc_score, doc_name)
 
 
@@ -393,7 +393,7 @@ def main ():
         for word in wordList:
             global query_id
             wordsInLowerCase.append (word.lower ())
-            #print (str (wordsInLowerCase))
+            # print (str (wordsInLowerCase))
         exact_match_retrival (wordsInLowerCase, query_id)
         query_map[query_id] = wordsInLowerCase
         # print(" The query map is " +str(query_map))
@@ -402,9 +402,9 @@ def main ():
     # Ranking by relevance
     relevant_documents = getRelevantDocuments (final_rank_map)
     if not relevant_documents:
-        print(" There are no documents for the given queries")
-    #print ("The relevant document list  is : " + str (relevant_documents))
-    #print (" The final rank map is " + str (final_rank_map))
+        print (" There are no documents for the given queries")
+    # print ("The relevant document list  is : " + str (relevant_documents))
+    # print (" The final rank map is " + str (final_rank_map))
     # copy the relevant documents to input folder for BM25
     for key in final_rank_map.keys ():
         query_term_list = query_map[key]
@@ -413,13 +413,13 @@ def main ():
             query += term + " "
         query_file = open ("queryFile.txt", "w")
         query_file.write (query)
-        #print ("The reconstructed query is " + query)
+        # print ("The reconstructed query is " + query)
         doc_list = final_rank_map.get (key)
         shutil.rmtree ('relevant_clean_corpus_exactMatch', ignore_errors=True)
         os.mkdir ('relevant_clean_corpus_exactMatch')
         for entry in doc_list:
             filename = entry
-            #print ("The filename is " + str (filename))
+            # print ("The filename is " + str (filename))
             shutil.copy2 (os.path.join (docCollectionPath, filename), 'relevant_clean_corpus_exactMatch')
         inputfolder = os.path.join (os.getcwd (), 'relevant_clean_corpus_exactMatch')
         inputqueryfile = os.path.join (os.getcwd (), 'queryFile.txt')
@@ -431,6 +431,7 @@ def main ():
             QUERY_ID += 1
             relevant_list = get_relevant_list (doc_name)
             generate_doc_bm25_score (query, inverted_index, total_num_of_docs, relevant_list, doc_name, doc_length)
+
 
 if __name__ == '__main__':
     main ()

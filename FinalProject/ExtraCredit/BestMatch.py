@@ -199,7 +199,7 @@ def process_score (query_term, inverted_index, N, relevant_list, doc_name, doc_l
             else:
                 doc_score.update ({doc_id: score})
     sorted_doc_score = sorted (doc_score.items (), key=operator.itemgetter (1), reverse=True)
-    #print (" The sorted doc_score is " + str (sorted_doc_score))
+    # print (" The sorted doc_score is " + str (sorted_doc_score))
     write_doc_score (sorted_doc_score, doc_name)
 
 
@@ -245,9 +245,9 @@ def compute_avdl (doc_length):
 
 def main ():
     # docCollectionPath = input("Enter path of text file collection : ")
-    docCollectionPath = "/Users/dipanjan/gitHub/Python-Projects/FinalProject/ExtraCredit/test-data/raw-documents/"
+    docCollectionPath = "/Users/dipanjan/gitHub/GroupProject/FinalProject/ExtraCredit/test-data/raw-documents1/"
     # queryFile = input("Enter path of query file : ")
-    queryFile = "/Users/dipanjan/gitHub/Python-Projects/FinalProject/ExtraCredit/test-data/query.txt"
+    queryFile = "/Users/dipanjan/gitHub/GroupProject/FinalProject/ExtraCredit/test-data/query2.txt"
     # method to build the index
     buildIndex (docCollectionPath)
 
@@ -278,6 +278,10 @@ def main ():
 
     # Ranking by relevance
     relevant_documents = getRelevantDocuments (relevent_doc_map)
+    # print(str(relevant_documents))
+    for key, value in relevant_documents.items ():
+        if not relevant_documents[key]:
+            print ("There are no relevant documents for the query in corpus")
     # print ("The relevant document list  is : " + str (relevant_documents))
     # copy the relevant documents to input folder for BM25
     for key in relevent_doc_map.keys ():

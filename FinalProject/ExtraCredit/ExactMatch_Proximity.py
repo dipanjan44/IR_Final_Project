@@ -177,7 +177,7 @@ def exact_match_proximity (resultList, query_terms, query_id, slider):
                 position_list_term = dictionary[term][document]
                 pos_list.append (position_list_term)
                 count = count + 1
-                #print ("The positions are :" + str (position_list_term))
+                # print ("The positions are :" + str (position_list_term))
         pos_doc_map[document] = pos_list
     #   print ("The map is :" + str (pos_doc_map))
     for key in pos_doc_map.keys ():
@@ -217,7 +217,7 @@ def exact_match_proximity (resultList, query_terms, query_id, slider):
                         val.append (key)
                         final_rank_map[query_id] = val
 
-    #print ("The final map is : " + str (final_rank_map))
+    # print ("The final map is : " + str (final_rank_map))
 
 
 def getRelevantDocuments (final_rank_map):
@@ -406,7 +406,7 @@ def main ():
             # print (str (wordsInLowerCase))
         exact_match_postional_retrival (wordsInLowerCase, query_id, slider)
         query_map[query_id] = wordsInLowerCase
-        #print(" The query map is " +str(query_map))
+        # print(" The query map is " +str(query_map))
         query_id = query_id + 1
 
     # Ranking by relevance
