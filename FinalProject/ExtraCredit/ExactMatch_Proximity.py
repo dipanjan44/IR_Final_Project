@@ -71,7 +71,7 @@ def exact_match_postional_retrival (query_terms, query_id, slider):
         resultList = getPostingList (query_terms[0])
         # print ("The result list is " + str (resultList))
         if not resultList:
-            print ("0 documents returned as there is no match")
+            print ("0 documents returned as there is no match for query no : " +str(query_id))
             return
 
         else:
@@ -108,14 +108,14 @@ def exact_match_postional_retrival (query_terms, query_id, slider):
                                                    list2)
                     # print("The result list is " +str(resultList))
                 else:
-                    print ("0 documents returned as there is no match")
+                    print ("0 documents returned as there is no match for query no : " +str(query_id))
                     return
             else:
                 list1 = getPostingList (query_terms[i])
                 if list1 is not None:
                     resultList = mergePostingList (resultList, list1)
                 else:
-                    print ("0 documents returned as there is no match")
+                    print ("0 documents returned as there is no match for query no : " +str(query_id))
                     return
                 # print ("The result list is ***** " + str (resultList))
         # print ("")

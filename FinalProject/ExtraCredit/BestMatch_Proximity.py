@@ -256,7 +256,7 @@ def main ():
             get_proximity_matched_documents (wordsInLowerCase, corpus_positional_inverted_index, slider))
         # print(str(ordered_proximity_match))
         if not ordered_proximity_match:
-            print ("There are no relevant documents for the query")
+            print ("There are no relevant documents for the query no : " +str(query_id))
         query_map[query_id] = wordsInLowerCase
         # print ("The relevant doc_list is " + str (ordered_proximity_match))
         relevant_doc_map[query_id] = ordered_proximity_match

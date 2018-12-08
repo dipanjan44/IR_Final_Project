@@ -281,7 +281,7 @@ def main ():
     # print(str(relevant_documents))
     for key, value in relevant_documents.items ():
         if not relevant_documents[key]:
-            print ("There are no relevant documents for the query in corpus")
+            print ("There are no relevant documents for the query no: " + str(key) + "  in corpus")
     # print ("The relevant document list  is : " + str (relevant_documents))
     # copy the relevant documents to input folder for BM25
     for key in relevent_doc_map.keys ():
