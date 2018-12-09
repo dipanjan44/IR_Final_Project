@@ -5,8 +5,6 @@ import math
 final_query_text="C:/Users/Ravi/Desktop/IR_ProjectRes/query_res.txt"
 top_ql_files="C:/Users/Ravi/Desktop/IR_ProjectRes/QL_Task1.txt"
 clean_corpus="C:/Users/Ravi/Desktop/IR_ProjectRes/Clean_Corpus1/"
-cacm_rel_path="C:/Users/Ravi/Documents/test-collection/cacm.rel.txt"
-
 
 
 k1=1.2
