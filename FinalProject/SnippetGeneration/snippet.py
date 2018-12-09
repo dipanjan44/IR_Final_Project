@@ -54,11 +54,11 @@ def startSnippetGeneration (ranked_document_list, processed_query_list):
 
 
 def createSnippet (query, docList, queryID):
-    cleanedQuery = clean (query)
+    cleanedQuery,query_original = clean (query)
     #print(cleanedQuery)
-    newHtml = dominate.document (title=cleanedQuery)
+    newHtml = dominate.document (title=query_original)
     with newHtml.body:
-        h1 (cleanedQuery)
+        h1 (query_original)
 
     for docID in docList:
 
@@ -89,7 +89,7 @@ def createSnippet (query, docList, queryID):
                 initialPos = start
             start = start + 1
 
-        displaySnippet = boldify (' '.join (bodyContent[initialPos:initialPos + WINDOW] + ['...']), query)
+        displaySnippet = boldify (' '.join (bodyContent[initialPos:initialPos + WINDOW] + ['...']), cleanedQuery)
 
         with newHtml.body:
             d = div ()
@@ -106,20 +106,24 @@ def createSnippet (query, docList, queryID):
 
 
 def clean (query):
-    # stopped_query_list = []
+    stopped_query_list = []
     query = query.replace ('\t', ' ')
     query = re.sub (' +', ' ', query)
     query.replace ('\n', ' ')
-    # query_term_list=query.split(" ")
-    # for term in query_term_list:
-    #     if term not in stop_word_list:
-    #         stopped_query_list.append(term)
+    query_original=query
+    pattern = re.compile ('[_!@\s#$%=+~()}{\][^?&*:;\\/|<>"\']')
+    query = pattern.sub (' ', query)
+    query_term_list=query.split(" ")
+    for term in query_term_list:
+         if term not in stop_word_list:
+            stopped_query_list.append(term)
     # #print("The stopped query list is " +str(stopped_query_list))
-    # query = ""
-    # for term in stopped_query_list:
-    #     query += term + " "
-    # #print ("The final query is : " + str (query))
-    return query
+    query = ""
+    for term in stopped_query_list:
+         query += term + " "
+    # print ("The final query is : " + str (query))
+    #print("The query is" +query)
+    return query,query_original
 
 
 def generate_stop_list():
@@ -132,19 +136,20 @@ def generate_stop_list():
 
 def boldify (title, query):
     titleContents = title.split (' ')
+    #print("Title content is " +str(titleContents))
     queryTerms = query.lower ().split (' ')
+    #print ("query_terms is " + str (queryTerms))
     boldTerms = []
     for term in titleContents:
         if term.lower () in queryTerms:
             boldTerms.append (b (term))
         else:
             boldTerms.append (term)
-
+    #print ("bold terms are  " + str (boldTerms))
     formatted_snippet = pre (style='margin:0;padding:0')
     count = 0
     for term in boldTerms:
         count += 1
-
         formatted_snippet.add (term)
         formatted_snippet.add (' ')
         if count % 15 == 0:
